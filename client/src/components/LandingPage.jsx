@@ -70,7 +70,7 @@ const LandingPage = () => {
       useEffect(() => {
         if (showButton) {
           // Change background color after showing the button
-          setBackgroundColor(bgColor[1]);
+          setBackgroundColor(bgColor[0]);
         }
       }, [showButton]);
     
@@ -86,7 +86,7 @@ const LandingPage = () => {
             </h1>
             <div className='pt-40'>
               {showButton && (
-              <button className="mx-10 px-10 py-2 text-md font-oswald text-black hover:text-white hover:bg-teal-900 bg-yellow-400 rounded-lg">
+              <button className="mx-10 px-10 py-2 text-md font-oswald text-black hover:text-white hover:bg-teal-900 bg-yellow-400 border-2 rounded-lg">
                 Enter
               </button>
             )}

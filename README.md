@@ -78,8 +78,23 @@
    3. [x] check for duplicate note
    4. [x] allow note update for original note title only
    
-# Section 8 - Front End
+# Section 8 - Front End Basics
 
-1. [ ] install react-router-dom
-2. [ ] install heroicons
-3. [ ] 
+1. [x] install react-router-dom
+2. [x] install heroicons
+3. [x] create the basic components for the front-end
+   1. [x] Layout
+   2. [x] Unauthenticated Pages
+      1. [x] LandingPage
+      2. [x] Login
+   3. [x] Authenticated / Protected pages
+      1. [x] Dashboard
+      2. [x] Welcome Page - post login
+      3. [x] Users Settings / Lost page
+      4. [x] Users Notes Page
+   
+# Section 9 - Data Organization - React Redux, RTK
+
+1. [x] install react-redux @reduxjs/toolkit
+2. [x] create an app/api directory for all the data mgt logic using redux and rtk
+   1. [ ] create apiSlice.js
