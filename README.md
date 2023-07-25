@@ -97,4 +97,7 @@
 
 1. [x] install react-redux @reduxjs/toolkit
 2. [x] create an app/api directory for all the data mgt logic using redux and rtk
-   1. [ ] create apiSlice.js
+   1. [x] create apiSlice.js
+   2. [x] create usersApiSlice.js and notesApiSlice.js for getting users and notes data from redux
+   3. [x] create User.js to feed in the user specific data into usersList.js
+   4. [ ] 
