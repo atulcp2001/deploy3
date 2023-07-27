@@ -16,6 +16,10 @@ const Welcome = () => {
 
             <p className='text-yellow-400'><Link to="/dash/users">View User Settings</Link></p>
 
+            <p className='text-yellow-400'><Link to="/dash/notes/new">Add a New User Note</Link></p>
+
+            <p className='text-yellow-400'><Link to="/dash/users/new">Add a New User</Link></p>
+
         </section>
     )
 
