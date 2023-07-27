@@ -100,4 +100,10 @@
    1. [x] create apiSlice.js
    2. [x] create usersApiSlice.js and notesApiSlice.js for getting users and notes data from redux
    3. [x] create User.js to feed in the user specific data into usersList.js
-   4. [ ] 
+   4. [x] create NewUser, EditUser forms. Create NewNote, EditNote forms to do CRUD operations on User and Notes objects from frontend using Redux, RTK and React based frontend
+
+# Section 10 - Authentication - server side
+
+1. [x] add auth route to protect User and Notes routes
+2. [x] install express-rate-limit for login limiter
+3. [x] create access token and refresh token secrets with node --> require('crypto').randomBytes(64).toString('hex')

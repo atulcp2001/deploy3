@@ -35,6 +35,9 @@ app.use('/', express.static(path.join(__dirname, 'views')))
 // Route to serve files in the server root directory ('views')
 app.use('/', require('./routes/root'))
 
+// Auth Routes to protect - user and notes routes
+app.use('/auth', require('./routes/authRoutes'))
+
 // User Routes
 app.use('/users', require('./routes/userRoutes'))
 
