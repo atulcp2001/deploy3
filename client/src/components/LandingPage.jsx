@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'
 
 const Typewriter = ({ messages, onComplete, backgroundColor }) => {
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
@@ -91,7 +92,9 @@ const LandingPage = () => {
               </button>
             )}
             </div>
-            
+            <footer>
+                <Link to="/login">Employee Login</Link>
+            </footer>
           </div>
         </div>
       );

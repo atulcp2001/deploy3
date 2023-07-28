@@ -107,3 +107,10 @@
 1. [x] add auth route to protect User and Notes routes
 2. [x] install express-rate-limit for login limiter
 3. [x] create access token and refresh token secrets with node --> require('crypto').randomBytes(64).toString('hex')
+4. [x] add authController with routes to perform login, token refresh and logout actions using jwt
+5. [x] create an authwrapper verifyJWT to protect every User and Notes route
+6. [x] test if the auth works for login, refresh and logout
+
+# Section 11 - Add the front end code for login, logout - Redux, RTK
+
+1. [x] add a redux api slice to perform logout, login
