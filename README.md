@@ -114,3 +114,11 @@
 # Section 11 - Add the front end code for login, logout - Redux, RTK
 
 1. [x] add a redux api slice to perform logout, login
+2. [x] add persist login on refresh - usePersist hook and PersistLogin page
+
+# Section 12 - Add data authorization
+
+1. [x] add jwt-decode dependency -for decoding jwt and getting the userinfo and roles
+2. [x] create a hook - useAuth - to decode the username, roles from the jwt token and then use it to perform data authorization and protect routes
+3. [x] useAuth Hook - NotesList, EditNoteForm
+4. [x] create RequireAuth.js - to protect routes - dash and users route - by applying it to App.js

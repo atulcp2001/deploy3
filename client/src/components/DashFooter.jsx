@@ -1,7 +1,10 @@
 import { HomeIcon } from '@heroicons/react/24/solid'
 import { useNavigate, useLocation } from 'react-router-dom'
+import useAuth from '../hooks/useAuth'
 
 const DashFooter = () => {
+
+    const { username, status } = useAuth()
 
     const navigate = useNavigate()
     const { pathname } = useLocation()
@@ -24,8 +27,8 @@ const DashFooter = () => {
     const content = (
         <footer className="bg-slate-900 text-white">
             {goHomeButton}
-            <p className='pt-5 mx-10'>Current User :</p>
-            <p className='pb-5 mx-10'>Status :</p>
+            <p className='pt-5 mx-10'>Current User : {username}</p>
+            <p className='pb-5 mx-10'>Status : {status}</p>
         </footer>
     )
     return content

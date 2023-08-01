@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux'
 import { setCredentials } from './authSlice'
 import { useLoginMutation } from './authApiSlice'
 
+import usePersist from '../../hooks/usePersist'
+
 
 const Login = () => {
 
@@ -13,6 +15,7 @@ const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [errMsg, setErrMsg] = useState('')
+  const [persist, setPersist] = usePersist()
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -52,16 +55,17 @@ const Login = () => {
 
   const handleUserInput = (e) => setUsername(e.target.value)
   const handlePwdInput = (e) => setPassword(e.target.value)
+  const handleToggle = (e) => setPersist(prev => !prev)
 
   if (isLoading) return <p className='text-yellow-300'>Loading...</p>
 
   const content =  (
-    <section className="flex items-center justify-center h-screen bg-teal-900">    
-        <header className="text-center text-white">
+    <div className="flex items-center justify-center h-screen bg-teal-900">    
+        <div className="text-center text-white">
             <h1 className="my-5 py-5 text-8xl font-bold">Login Here!</h1>
-        </header>
+        </div>
 
-        <main>
+        <div>
           <p ref={errRef} className='text-yellow-300' aria-live="assertive">{errMsg}</p>
 
           <form className="space-y-6" onSubmit={handleSubmit}>
@@ -108,15 +112,29 @@ const Login = () => {
                 </button>
               </div>
 
+              <div className='pb-10'>
+                  <label className="block text-sm font-medium leading-6 text-gray-300" htmlFor="persist">
+                            
+                  <input
+                      id="persist"
+                      type="checkbox"
+                      checked={persist}
+                      onChange={handleToggle}
+                      className="h-4 w-4 mr-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                    />   
+                    Trust this device 
+                  </label>
+              </div>
+
           </form>
 
-        </main>
+        </div>
         
         <footer>
             <Link to="/">Back to Home</Link>
         </footer>
 
-    </section>
+    </div>
   )
 
   return content

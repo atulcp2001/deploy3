@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react"
 import { useUpdateNoteMutation, useDeleteNoteMutation } from "./notesApiSlice"
 import { useNavigate } from "react-router-dom"
+import useAuth from "../../hooks/useAuth"
 
 const EditNoteForm = ({note, users}) => {
+
+  const { isCoach, isAdmin } = useAuth()
 
   const [updateNote, {
     isLoading,
@@ -66,6 +69,19 @@ const EditNoteForm = ({note, users}) => {
     )
   })  
 
+  let deleteButton = null
+  if(isCoach || isAdmin) {
+    deleteButton = (
+      <button 
+                  title="Delete"
+                  className="block rounded-md bg-red-600 w-20 px-3 py-2 text-center text-sm text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  onClick={onDeleteNoteClicked}
+                  >
+                    Delete
+                </button>
+    )
+  }
+
   const content = (
 
     <div className="bg-teal-900">
@@ -86,14 +102,7 @@ const EditNoteForm = ({note, users}) => {
                     Save
                 </button>
 
-                <button 
-                  title="Delete"
-                  className="block rounded-md bg-red-600 w-20 px-3 py-2 text-center text-sm text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  onClick={onDeleteNoteClicked}
-                  >
-                    Delete
-                </button>
-
+                {deleteButton}
 
               </div>
           </div>
