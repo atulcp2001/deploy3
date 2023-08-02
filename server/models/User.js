@@ -37,10 +37,10 @@ const userSchema = new mongoose.Schema(
       resetPasswordExpires: {
         type: Date,
       },
-      roles: [{
-        type: String,
-        default: "Guest"
-      }],
+      roles: {
+        type: [String],
+        default: ["Guest"]
+      },
       active: {
         type: Boolean,
         default: true

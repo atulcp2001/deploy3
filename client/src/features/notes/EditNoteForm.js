@@ -2,8 +2,10 @@ import { useState, useEffect } from "react"
 import { useUpdateNoteMutation, useDeleteNoteMutation } from "./notesApiSlice"
 import { useNavigate } from "react-router-dom"
 import useAuth from "../../hooks/useAuth"
+import useTitle from "../../hooks/useTitle"
 
 const EditNoteForm = ({note, users}) => {
+  useTitle('Edit Notes')
 
   const { isCoach, isAdmin } = useAuth()
 

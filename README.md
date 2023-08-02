@@ -122,3 +122,35 @@
 2. [x] create a hook - useAuth - to decode the username, roles from the jwt token and then use it to perform data authorization and protect routes
 3. [x] useAuth Hook - NotesList, EditNoteForm
 4. [x] create RequireAuth.js - to protect routes - dash and users route - by applying it to App.js
+
+# Section 13 - Code Refactoring - backend
+
+1. [x] usersController and notesController - collation - to check for case sensitive duplicate usernames - make it case insensitive
+2. [x] In the User.js model, change the role field definition from: roles: [{
+        type: String,
+        default: "Guest"
+      }], to : roles: {
+        type: [String],
+        default: ["Guest"]
+      },
+3. [x] Remove the roles checking from the usersController - and check for only username and password for creating a new user
+4. [x] Create a user in the database with default role if no role is provided !Array.isArray(roles) || roles.length check
+5. [x] consider using express-async-errors instead of asyncHandler (for future)
+6. [x] make changes to error handler (errorHandler.js) middleware - RTK query - isError: true
+
+# Section 14 - Code Refactoring - frontend
+
+1. [x] Changes to notes and users api slice
+   1. [x] notesApiSlice - getNotes - validationStatus to be part of the query object
+   2. [x] usersApiSlice - getUsers - validationStatus to be part of the query object
+   3. [x] Prefetch component - do prefetch instead of initiate
+      1. [x] change store.dispatch(notesApiSlice.endpoints.getNotes.initiate()) to store.dispatch(notesApiSlice.util.prefetch('getNotes', 'notesList', {force: true}))
+      2. [x] remove the return / unsubscribe portion of the code
+2. [x] Add a spinner - npm i react-spinners
+   1. [x] In Note, instead of using useSelector and selectNoteById, use useGetNotesQuery from notesApiSlice
+   2. [x] use memo from react - const memoizedNote = memo(Note) , export default memoizedNote
+   3. [x] do the above two steps for the User component
+3. [x] Changes to EditUser component
+   1. [x] import { useGetUsersQuery } from './usersApiSlice'
+   2. [x] import PulseLoader from 'react-spinners/PulseLoader'
+4. [x] Changes to the NewNote and the EditNote component - replace selectors with useGetUsersQuery and useGetNotesQuery

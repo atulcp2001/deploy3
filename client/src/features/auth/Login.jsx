@@ -6,9 +6,11 @@ import { setCredentials } from './authSlice'
 import { useLoginMutation } from './authApiSlice'
 
 import usePersist from '../../hooks/usePersist'
+import useTitle from '../../hooks/useTitle'
 
 
 const Login = () => {
+  useTitle('Trail Notes - Login')
 
   const userRef = useRef()
   const errRef = useRef()

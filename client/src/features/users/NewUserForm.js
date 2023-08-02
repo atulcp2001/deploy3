@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useAddNewUserMutation } from "./usersApiSlice"
 import { useNavigate } from "react-router-dom"
 import { ROLES } from '../../config/role'
+import useTitle from "../../hooks/useTitle"
 
 const EMAIL_REGEX = /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/
 const USER_REGEX = /^[A-z]{3,20}$/
@@ -9,6 +10,7 @@ const PWD_REGEX = /^[A-z0-9!@#$%]{4,12}$/
 
 const NewUserForm = () => {
 
+  useTitle('New User')
   const [addNewUser, {
     isLoading,
     isSuccess,
