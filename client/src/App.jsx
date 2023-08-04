@@ -8,6 +8,7 @@ import NotesList from './features/notes/NotesList'
 import UsersList from './features/users/UsersList'
 import EditUser from './features/users/EditUser'
 import NewUserForm from './features/users/NewUserForm'
+import SignUpNewUserForm from './features/users/SignUpNewUserForm'
 import EditNote from './features/notes/EditNote'
 import NewNote from './features/notes/NewNote'
 import Prefetch from './features/auth/Prefetch'
@@ -15,6 +16,7 @@ import PersistLogin from './features/auth/PersistLogin'
 import RequireAuth from './features/auth/RequireAuth'
 import { ROLES } from './config/role'
 import useTitle from './hooks/useTitle'
+import Modal from './utils/Modal'
 
 const App = () => {
   useTitle('Trail Notes')
@@ -25,6 +27,7 @@ const App = () => {
       {/* public routes */}
       <Route index element={<LandingPage />} />
       <Route path='login' element={<Login />}  />
+      <Route path='signup' element={<SignUpNewUserForm />} />
       
       {/* protected routes */}
       <Route element={<PersistLogin />}>

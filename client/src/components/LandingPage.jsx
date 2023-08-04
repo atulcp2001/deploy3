@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const Typewriter = ({ messages, onComplete, backgroundColor }) => {
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
@@ -48,6 +48,9 @@ const Typewriter = ({ messages, onComplete, backgroundColor }) => {
 };
 
 const LandingPage = () => {
+
+    const navigate = useNavigate();
+
     const messages = [
         'Hello!',
         'What is in your heart?',
@@ -59,21 +62,27 @@ const LandingPage = () => {
         'Welcome to your next!'
       ];
     
-      const bgColor = ['bg-teal-900','bg-slate-900'];
-      const [showButton, setShowButton] = useState(false);
-      const [backgroundColor, setBackgroundColor] = useState(bgColor[0]); // Initial background color
+      const bgColor = ['bg-teal-900','bg-slate-900']
+      const [showButton, setShowButton] = useState(false)
+      //const [backgroundColor, setBackgroundColor] = useState(bgColor[0]); // Initial background color
+      const backgroundColor = bgColor[0]
       const screenBackground = 'flex items-center justify-center h-screen'
-    
+      
       const handleTypingComplete = () => {
         setShowButton(true); // Show the button when typing is complete
       };
     
-      useEffect(() => {
-        if (showButton) {
-          // Change background color after showing the button
-          setBackgroundColor(bgColor[0]);
-        }
-      }, [showButton]);
+      //03 Aug 2023 - commenting this code
+      // useEffect(() => {
+      //   if (showButton) {
+      //     // Change background color after showing the button
+      //     setBackgroundColor(bgColor[0]);
+      //   }
+      // }, [showButton]);
+
+      const handleOnEnterClicked = () => {
+        navigate('/login')
+      }
     
       return (
         <div className={`${screenBackground} ${backgroundColor}`}>
@@ -86,15 +95,24 @@ const LandingPage = () => {
               />
             </h1>
             <div className='pt-40'>
-              {showButton && (
-              <button className="mx-10 px-10 py-2 text-md font-oswald text-black hover:text-white hover:bg-teal-900 bg-yellow-400 border-2 rounded-lg">
+              {/* {showButton && (
+              <button 
+              onClick={handleOnEnterClicked}
+              className="mx-10 px-10 py-2 text-md font-oswald text-black hover:text-white hover:bg-teal-900 bg-yellow-400 border-2 rounded-lg">
                 Enter
               </button>
-            )}
+            )} */}
+            
+              <button 
+              onClick={handleOnEnterClicked}
+              className="mx-10 px-10 py-2 text-md font-oswald text-black hover:text-white hover:bg-teal-900 bg-yellow-400 border-2 rounded-lg">
+                Enter
+              </button>
+            
             </div>
-            <footer>
+            {/* <footer>
                 <Link to="/login">Employee Login</Link>
-            </footer>
+            </footer> */}
           </div>
         </div>
       );

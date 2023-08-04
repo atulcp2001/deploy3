@@ -62,14 +62,15 @@ const Login = () => {
   if (isLoading) return <p className='text-yellow-300'>Loading...</p>
 
   const content =  (
-    <div className="flex items-center justify-center h-screen bg-teal-900">    
-        <div className="text-center text-white">
-            <h1 className="my-5 py-5 text-8xl font-bold">Login Here!</h1>
+    <div className="flex flex-col lg:flex-row items-center justify-center h-screen bg-teal-900">    
+        <div className="w-1/2 text-center text-white">
+            <h1 className="lg:ml-10 lg:my-10 py-5 text-3xl lg:text-8xl font-bold">Start Here!</h1>
         </div>
 
-        <div>
+        <div className='mx-auto rounded-xl border-2 border-gray-500 px-5 py-5 lg:px-20 lg:py-10 lg:mx-40'>
           <p ref={errRef} className='text-yellow-300' aria-live="assertive">{errMsg}</p>
 
+          <h3 className="lg:ml-10 lg:my-2 py-2 text-yellow-300 text-xl lg:text-3xl font-bold">Sign In</h3>
           <form className="space-y-6" onSubmit={handleSubmit}>
 
             <div>
@@ -127,15 +128,14 @@ const Login = () => {
                     Trust this device 
                   </label>
               </div>
-
+              
           </form>
+            <div className='py-30 flex flex-col'>
+              <Link to="/signup" className='text-yellow-300 text-lg'>Sign up here</Link>
+              <Link to="/" className='text-white text-lg'>Back to Home</Link>
 
+            </div>
         </div>
-        
-        <footer>
-            <Link to="/">Back to Home</Link>
-        </footer>
-
     </div>
   )
 

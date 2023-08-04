@@ -154,3 +154,7 @@
    1. [x] import { useGetUsersQuery } from './usersApiSlice'
    2. [x] import PulseLoader from 'react-spinners/PulseLoader'
 4. [x] Changes to the NewNote and the EditNote component - replace selectors with useGetUsersQuery and useGetNotesQuery
+
+# Section 15 - Front End Refinements
+
+1. [x] New User Registration / Sign up form

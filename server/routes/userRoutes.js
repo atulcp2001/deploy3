@@ -3,12 +3,15 @@ const router = express.Router();
 const usersController = require('../contollers/usersController')
 const verifyJWT = require('../middleware/verifyJWT')
 
-router.use(verifyJWT)
+//router.use(verifyJWT) // commenting this to creata a registerNewUser endpoint
 
 router.route('/')
-    .get(usersController.getAllUsers)
-    .post(usersController.createNewUser)
-    .patch(usersController.updateUser)
-    .delete(usersController.deleteUser)
+    .get(verifyJWT,usersController.getAllUsers)
+    .post(usersController.registerNewUser)
+    .post(verifyJWT,usersController.createNewUser)
+    .patch(verifyJWT, usersController.updateUser)
+    .delete(verifyJWT,usersController.deleteUser)
 
 module.exports = router
+
+// 03 Aug 2023 - Add Register New User Logic to the controller. This should be a public route
