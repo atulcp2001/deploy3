@@ -1,9 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { setCredentials } from '../../features/auth/authSlice'
 
+const baseUrlString = 'https://deploy3-api.onrender.com' || 'http://localhost:4000'
+
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'https://deploy3-api.onrender.com',
+    // baseUrl: 'https://deploy3-api.onrender.com',
     // baseUrl: 'http://localhost:4000',
+    baseUrl: baseUrlString,
+    
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
         const token = getState().auth.token

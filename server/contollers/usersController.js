@@ -3,6 +3,52 @@ const Note = require('../models/Note')
 
 const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcrypt')
+const generateVerifyToken = require('../utils/generateVerifyToken')
+const sendVerificationEmail = require('../utils/sendVerificationEmail')
+const clientUrl = `${process.env.CLIENT_URL}/login` || 'http://localhost:3000/login'
+// const clientUrl = 'https://deploy3-mu24.onrender.com'
+
+// @desc Verify a user
+// @route GET /users/verify/:verificationToken
+// @access public - from an email link
+
+const verifyCreatedUser = asyncHandler(async (req, res) => {
+
+    // Extract verification token from the request
+    const { verificationToken } = req.params
+
+    // Check for the exact user
+    const user = await User.findOne({ verificationToken }).exec()
+
+    // If the user with the token is not found
+    if (!user) {
+        return res.status(400).json({ message: 'User not found. Incorrect Token' })
+    }
+
+    // If User with verificationToken is found then update user's account as verified
+    user.isVerified = true;
+    user.verificationToken = null; // Reset the verification token
+    const verifiedUser = await user.save();
+
+    if(verifiedUser) {
+        const delayInSeconds = 5;
+    return res.send(`
+      <html>
+        <head>
+          <script>
+          setTimeout(function() {
+            window.location.href = "${clientUrl}";
+          }, ${delayInSeconds * 1000}); // Convert seconds to milliseconds
+          </script>
+        </head>
+        <body>
+          <p>Verification successful. Redirecting...</p>
+        </body>
+      </html>
+    `)
+    }
+})
+
 
 // @desc Get all users
 // @route GET /users
@@ -52,12 +98,16 @@ const registerNewUser = asyncHandler(async (req, res) => {
      // Hash password 
      const hashedPwd = await bcrypt.hash(password, 10) // salt rounds
 
-     const userObject = { name, email, username, "password": hashedPwd }                     
+     // Verification Token
+     const verificationToken = generateVerifyToken()
+
+     const userObject = { name, email, username, "password": hashedPwd, verificationToken }                     
      
     // Create and store new user 
      const user = await User.create(userObject)
  
      if (user) { //created 
+        sendVerificationEmail(user.email, user.verificationToken)
          res.status(201).json({ message: `New user ${username} created` })
      } else {
          res.status(400).json({ message: 'Invalid user data received' })
@@ -95,11 +145,14 @@ const createNewUser = asyncHandler(async (req, res) => {
      // Hash password 
      const hashedPwd = await bcrypt.hash(password, 10) // salt rounds
 
+     // Verification Token
+     const verificationToken = generateVerifyToken()
+
      const userObject = (!Array.isArray(roles) || !roles.length)
-                        ? { name, email, username, "password": hashedPwd }
-                        : { name, email, username, "password": hashedPwd, roles }    
+                        ? { name, email, username, "password": hashedPwd, verificationToken }
+                        : { name, email, username, "password": hashedPwd, roles, verificationToken }    
      
-                        // Create and store new user 
+    // Create and store new user 
      const user = await User.create(userObject)
  
      if (user) { //created 
@@ -190,5 +243,5 @@ const deleteUser = asyncHandler(async (req, res) => {
 
 })
 
-module.exports = {getAllUsers, registerNewUser, createNewUser, updateUser, deleteUser}
+module.exports = {verifyCreatedUser, getAllUsers, registerNewUser, createNewUser, updateUser, deleteUser}
 

@@ -22,14 +22,14 @@ const login = asyncHandler(async (req, res) => {
 
     //if a matching user is not found or if the matching user is not active
     if (!foundUser || !foundUser.active) {
-        return res.status(401).json({ message: 'Unauthorized' })
+        return res.status(401).json({ message: 'Unauthorized. Ask your admin' })
     }
 
     //check for the right password for the found and active user
     const match = await bcrypt.compare(password, foundUser.password)
 
     //if password does not match with the password in the database
-    if (!match) return res.status(401).json({ message: 'Unauthorized' })
+    if (!match) return res.status(401).json({ message: 'Unauthorized credentials' })
 
     //if the passwords match then create the access and refresh tokens
     const accessToken = jwt.sign(

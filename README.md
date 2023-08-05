@@ -155,6 +155,10 @@
    2. [x] import PulseLoader from 'react-spinners/PulseLoader'
 4. [x] Changes to the NewNote and the EditNote component - replace selectors with useGetUsersQuery and useGetNotesQuery
 
-# Section 15 - Front End Refinements
+# Section 15 - Front End and Back End Refinements
 
-1. [x] New User Registration / Sign up form
+1. [x] Front End - New User Registration / Sign up form
+2. [x] Back End - User Registration end point without verifyJWT
+3. [x] Back End - Generate Verification and Reset token utility with crypto (install crypto)
+4. [x] Back End - Send the tokens using nodemailer utility (install nodemailer) 
+5. [x] Complete the verification in the backend and from the server reirect to the login page on the client side after successful verification
