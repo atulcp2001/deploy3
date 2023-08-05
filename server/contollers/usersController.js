@@ -5,7 +5,7 @@ const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcrypt')
 const generateVerifyToken = require('../utils/generateVerifyToken')
 const sendVerificationEmail = require('../utils/sendVerificationEmail')
-const clientUrl = `${process.env.CLIENT_URL}` || 'http://localhost:3000/login'
+const clientUrl = `${process.env.CLIENT_URL}/login` || 'http://localhost:3000/login'
 // const clientUrl = 'https://deploy3-mu24.onrender.com'
 
 // @desc Verify a user
@@ -32,7 +32,8 @@ const verifyCreatedUser = asyncHandler(async (req, res) => {
 
     if(verifiedUser) {
         const delayInSeconds = 5;
-    return res.send(`
+    
+     const responseHTML = `
       <html>
         <head>
           <script>
@@ -45,7 +46,15 @@ const verifyCreatedUser = asyncHandler(async (req, res) => {
           <p>Verification successful. Redirecting...</p>
         </body>
       </html>
-    `)
+    `
+
+    // Set the CORS headers for the response to allow the redirect
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+
+    return res.send(responseHTML)
+
     }
 })
 
