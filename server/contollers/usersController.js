@@ -5,7 +5,7 @@ const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcrypt')
 const generateVerifyToken = require('../utils/generateVerifyToken')
 const sendVerificationEmail = require('../utils/sendVerificationEmail')
-const clientUrl = `${process.env.CLIENT_URL}/login` || 'http://localhost:3000/login'
+const clientUrl = `${process.env.CLIENT_URL}` || 'http://localhost:3000/login'
 // const clientUrl = 'https://deploy3-mu24.onrender.com'
 
 // @desc Verify a user
