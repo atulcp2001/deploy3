@@ -163,7 +163,7 @@ useEffect(() => {
 
         <Transition.Root show={showModal} as={Fragment}>
           <Dialog as="div" className="fixed inset-0 overflow-y-auto" onClose={closeModal}>
-            <div className="flex items-center justify-center min-h-screen px-4 pb-20 text-center">
+            <div data-modal-backdrop="static" className="flex items-center justify-center min-h-screen px-4 pb-20 text-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"

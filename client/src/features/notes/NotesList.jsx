@@ -24,7 +24,7 @@ const NotesList = () => {
     if(isLoading) content = <p>Loading....</p>
 
     if(isError) {
-        content = <p>{error?.data?.message}</p>
+        content = <p className="text-yellow-400 text-xl">{error?.data?.message}</p>
     }
 
     if (isSuccess) {

@@ -5,7 +5,9 @@ const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcrypt')
 const generateVerifyToken = require('../utils/generateVerifyToken')
 const sendVerificationEmail = require('../utils/sendVerificationEmail')
-const clientUrl = `${process.env.CLIENT_URL}/login` || 'http://localhost:3000/login'
+const generateResetToken = require('../utils/generateResetToken')
+const sendResetEmail = require('../utils/sendResetEmail')
+const clientUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : `${process.env.CLIENT_URL}` 
 // const clientUrl = 'https://deploy3-mu24.onrender.com'
 
 // @desc Verify a user
@@ -33,12 +35,13 @@ const verifyCreatedUser = asyncHandler(async (req, res) => {
     if(verifiedUser) {
         const delayInSeconds = 5;
     
+        const redirectUrl = `${clientUrl}/login`
      const responseHTML = `
       <html>
         <head>
           <script>
           setTimeout(function() {
-            window.location.href = "${clientUrl}";
+            window.location.href = "${redirectUrl}";
           }, ${delayInSeconds * 1000}); // Convert seconds to milliseconds
           </script>
         </head>
@@ -252,5 +255,184 @@ const deleteUser = asyncHandler(async (req, res) => {
 
 })
 
-module.exports = {verifyCreatedUser, getAllUsers, registerNewUser, createNewUser, updateUser, deleteUser}
+// @desc Verify a user by email for password reset and generate resetToken
+// @route POST /users/forgot-password
+// @access public
+
+const verifyUserForPwdReset = asyncHandler(async (req,res) => {
+
+    const { email } = req.body
+
+    // Check for data
+    if(!email) {
+        return res.status(400).json({ message: 'User Email is required' })
+    }
+
+    // Find a matching user by email
+    const user = await User.findOne({email}).exec()
+
+    // If no user with matching email found
+    if(!user) {
+        return res.status(400).json({ message: 'User not found' })
+    }
+
+    // If matching user found, then generate a resetToken with Expiration date
+    const resetToken = generateResetToken()
+
+    // Save the resetToken in the database along with expiry date
+    user.resetPasswordToken = resetToken
+    user.resetPasswordExpires = Date.now() + 600000; // Token expiration time: 10 min
+    const updatedUser = await user.save()
+
+    // Send the resetToken by email
+    if(updateUser) {
+        sendResetEmail(updatedUser.email, updatedUser.resetPasswordToken)
+        res.status(201).json({ message: `Reset email sent successfully`})
+    } else {
+        res.status(400).json({ message: 'Problem in sending reset token' })
+    }
+})
+
+// @desc complete the password reset with unexpired and verified resetToken 
+// @route POST /users/reset
+// @access public
+
+const resetUserPwd =asyncHandler(async (req,res) => {
+
+    //extract the info from request
+    const { newPassword, resetToken } = req.body
+    
+    // Find the user with the matching reset token
+    const user = await User.findOne({ resetPasswordToken: resetToken }).exec();
+
+    // If matching user is not found
+    if(!user) {
+    console.log('user with matching email not found')
+    return res.status(400).json({ message: 'User not found' })
+        }
+    
+    //check if the token is unexpired - redirect to the forgot-password page
+
+    const expiredToken = user.resetPasswordExpires < Date.now()
+
+    if(expiredToken) {
+        console.log('Reset token is expired!. Redirecting to client /forgot-password page')
+        const delayInSeconds = 5;     
+        const redirectUrl = `${clientUrl}/forgot-password`
+        const responseHTML = `
+      <html>
+        <head>
+          <script>
+          setTimeout(function() {
+            window.location.href = "${redirectUrl}";
+          }, ${delayInSeconds * 1000}); // Convert seconds to milliseconds
+          </script>
+        </head>
+        <body>
+          <p>Reset Token Expired! Redirecting...</p>
+        </body>
+      </html>
+        `       
+        return res.status(400)
+              .send(responseHTML)
+              .json({ message: 'Reset token is expired!' })
+    }
+
+    // if matching user is found with a valid and unexpired resetToken, set the new password
+
+    if (user && !expiredToken) {
+        // Hash password 
+    const hashedPwd = await bcrypt.hash(newPassword, 10) // salt rounds
+
+    user.password = hashedPwd; //set the new password
+    user.resetPasswordToken = null //Reset the resetToken field
+    user.resetPasswordExpires = null // Reset the reset token expiration field
+    await user.save();
+
+    return res.status(201).json({message: 'password reset successfully'})
+    }
+    
+})
+
+// @desc complete the resetToken verification when email link is clicked
+// @route POST /users/reset/:resetToken
+// @access public
+
+const verifyResetToken = asyncHandler(async (req, res) => {
+
+    //extract the resetToken from the request url
+    const { resetToken } = req.params
+    console.log('extracted token', resetToken)
+    // Find the user with the matching reset token
+    const user = await User.findOne({ resetPasswordToken: resetToken }).exec();
+
+    // If matching user is not found
+    if(!user) {
+        console.log('user with matching email not found')
+        return res.status(400).json({ message: 'User not found' })
+    }
+    //check if the token is unexpired - redirect to the forgot-password page
+    const expiredToken = user.resetPasswordExpires < Date.now()
+    if(expiredToken) {
+        console.log('Reset token is expired!. Redirecting to client /forgot-password page')
+        const delayInSeconds = 5;     
+        const redirectUrl = `${clientUrl}/forgot-password`
+        const responseHTML = `
+          <html>
+            <head>
+              <script>
+              setTimeout(function() {
+                window.location.href = "${redirectUrl}";
+              }, ${delayInSeconds * 1000}); // Convert seconds to milliseconds
+              </script>
+            </head>
+            <body>
+              <p>Reset Token Expired! Redirecting...</p>
+            </body>
+          </html>
+        `       
+        return res.status(400)
+                  .send(responseHTML)
+                  .json({ message: 'Reset token is expired!' })
+    }
+
+    // If matching user is found then mark the verification successful and redirect to client reset-password page with reset token
+
+    if(user && !expiredToken) {
+        console.log('Reset token is valid!. Redirecting to client /reset-password page')
+        const delayInSeconds = 5;     
+        const redirectUrl = `${clientUrl}/reset-password?resetToken=${resetToken}`
+        const responseHTML = `
+          <html>
+            <head>
+              <script>
+              setTimeout(function() {
+                window.location.href = "${redirectUrl}";
+              }, ${delayInSeconds * 1000}); // Convert seconds to milliseconds
+              </script>
+            </head>
+            <body>
+              <p>Valid Reset Token! Redirecting...</p>
+            </body>
+          </html>
+        `       
+        return res.status(200)
+                  .send(responseHTML)
+                  .json({ message: 'Reset token is valid. Proceed with password reset!' })
+     }
+})
+
+
+module.exports = 
+{
+    verifyCreatedUser, 
+    getAllUsers, 
+    registerNewUser, 
+    createNewUser, 
+    updateUser, 
+    deleteUser,
+    verifyUserForPwdReset,
+    verifyResetToken,
+    resetUserPwd
+}
 

@@ -131,6 +131,7 @@ const Login = () => {
               
           </form>
             <div className='py-30 flex flex-col'>
+              <Link to="/forgot-password" className='text-gray-300 text-lg'>Forgot Password?</Link>
               <Link to="/signup" className='text-yellow-300 text-lg'>Sign up here</Link>
               <Link to="/" className='text-white text-lg'>Back to Home</Link>
 

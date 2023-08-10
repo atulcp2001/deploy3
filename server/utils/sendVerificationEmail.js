@@ -3,7 +3,7 @@ const emailHost = process.env.EMAIL_HOST
 const emailPort = process.env.EMAIL_PORT
 const emailAccount = process.env.EMAIL_ACCOUNT
 const emailPassword = process.env.EMAIL_PASSWORD 
-const serverUrl = process.env.SERVER_URL || 'http://localhost:4000'
+const serverUrl = process.env.NODE_ENV !== 'development' ? process.env.SERVER_URL : 'http://localhost:4000'
 // const serverUrl = 'https://deploy3-api.onrender.com'
 
 

@@ -162,3 +162,31 @@
 3. [x] Back End - Generate Verification and Reset token utility with crypto (install crypto)
 4. [x] Back End - Send the tokens using nodemailer utility (install nodemailer) 
 5. [x] Complete the verification in the backend and from the server reirect to the login page on the client side after successful verification
+6. [x] Forgot sign in credentials logic
+   1. [ ] Forgot username - FE page - enter email, check if email exists, if yes, send the username
+   2. [x] Forgot password
+      1. [x] FE - ask to enter the email
+         1. [x] Create a password-reset client route to load PasswordReset JSX component (App.jsx)
+         2. [x] Create the PasswordReset Component - - features/auth
+            1. [x] Password Reset Initiation (Forgot Password) Form: no resetToken
+               1. [x] Prompt to enter the email to get the password reset started
+               2. [x] Check for email validity with backend
+               3. [x] Display a message after successful email verification and resetToken sent
+               4. [ ] Optional - username check
+               5. [ ] Optional - is user active check
+            2. [x] Password Reset Update Form: with valid resetToken
+      2. [x] BE - check if the email exists
+         1. [x] Create routes - in the auth routes
+            1. [x] /forgot-password - request is sent to this route
+            2. [x] /reset/:resetToken - generated resetToken is sent to this route
+            3. [x] /reset - reset completion after receiving new password from frontend
+      3. [x] BE - if yes, then generate resetToken
+      4. [x] BE - send the resetToken to Email
+      5. [x] Email - click the email with link
+      6. [x] BE - extract the info from the clicked link
+      7. [x] BE - check if the resetToken is valid and unexpired
+      8. [x] BE - redirect to the client url for resetting the password
+      9.  [x] FE - enter the new password and submit
+      10. [x] BE - check for the user credentials and update the password in DB
+      11. [x] BE - message frontend on successful password update with a link to go to sign in page
+      12. [ ] Optional - take back to login page after 5 seconds for the user to login with new password

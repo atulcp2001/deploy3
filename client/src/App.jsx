@@ -2,6 +2,7 @@ import { Routes, Route  } from 'react-router-dom'
 import LandingPage from './components/LandingPage'
 import Layout from './components/Layout'
 import Login from './features/auth/Login'
+import ForgotPassword from './features/auth/ForgotPassword'
 import DashLayout from './components/DashLayout'
 import Welcome from './features/auth/Welcome'
 import NotesList from './features/notes/NotesList'
@@ -16,6 +17,7 @@ import PersistLogin from './features/auth/PersistLogin'
 import RequireAuth from './features/auth/RequireAuth'
 import { ROLES } from './config/role'
 import useTitle from './hooks/useTitle'
+import ResetPassword from './features/auth/ResetPassword'
 
 
 const App = () => {
@@ -28,6 +30,8 @@ const App = () => {
       <Route index element={<LandingPage />} />
       <Route path='login' element={<Login />}  />
       <Route path='signup' element={<SignUpNewUserForm />} />
+      <Route path='forgot-password' element={<ForgotPassword />} />
+      <Route path='reset-password' element={<ResetPassword />} />
       
       {/* protected routes */}
       <Route element={<PersistLogin />}>
