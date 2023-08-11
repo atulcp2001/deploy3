@@ -7,7 +7,7 @@ import useTitle from "../../hooks/useTitle"
 const EditNoteForm = ({note, users}) => {
   useTitle('Edit Notes')
 
-  const { isCoach, isAdmin } = useAuth()
+  const { username, isCoach, isAdmin } = useAuth()
 
   const [updateNote, {
     isLoading,
@@ -62,13 +62,26 @@ const EditNoteForm = ({note, users}) => {
   const updated = new Date(note.updatedAt).toLocaleString('en-US', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
 
   const options = users.map(user => {
-    return (
+    // Include all users' options for Coaches and Admins
+    // Include only the currently logged-in user's option for others
+    if(isCoach || isAdmin) {
+      return (
+        <option
+            key={user.id}
+            value={user.id}
+
+        > {user.username}</option > 
+        )
+    } else if (user.roles.includes('Coach') || user.roles.includes('Admin') || user.roles.includes('Guest') && user.username == username) {
+      return (
         <option
             key={user.id}
             value={user.id}
 
         > {user.username}</option >
     )
+    }
+    return null
   })  
 
   let deleteButton = null
@@ -94,7 +107,7 @@ const EditNoteForm = ({note, users}) => {
         <form className="space-y-6" onSubmit={e => e.preventDefault()}>
           <div className="text-center text-gray-300">
             <h2 className="text-4xl font-bold py-5">Edit Note</h2>
-              <div className="flex justify-between py-2">
+              {/* <div className="flex justify-between py-2">
                 <button 
                   title="Save"
                   className="block rounded-md bg-indigo-600 w-20 px-3 py-2 text-center text-sm text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -106,7 +119,7 @@ const EditNoteForm = ({note, users}) => {
 
                 {deleteButton}
 
-              </div>
+              </div> */}
           </div>
             
           <div>
@@ -169,6 +182,20 @@ const EditNoteForm = ({note, users}) => {
                 > 
                   {options}
                 </select>
+              </div>
+
+              <div className="flex justify-between pt-10">
+                <button 
+                  title="Save"
+                  className="block rounded-md bg-indigo-600 w-20 px-3 py-2 text-center text-sm text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  // disabled={!canSave}
+                  onClick={onSaveNoteClicked}
+                  >
+                    Save
+                </button>
+
+                {deleteButton}
+
               </div>
 
               <div className="pt-5 divide-y divide-gray-300">

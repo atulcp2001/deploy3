@@ -7,8 +7,8 @@ const generateVerifyToken = require('../utils/generateVerifyToken')
 const sendVerificationEmail = require('../utils/sendVerificationEmail')
 const generateResetToken = require('../utils/generateResetToken')
 const sendResetEmail = require('../utils/sendResetEmail')
-const clientUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : `${process.env.CLIENT_URL}` 
-// const clientUrl = 'https://deploy3-mu24.onrender.com'
+// const clientUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : `${process.env.CLIENT_URL}` 
+const clientUrl = 'https://deploy3-mu24.onrender.com'
 
 // @desc Verify a user
 // @route GET /users/verify/:verificationToken
@@ -28,12 +28,13 @@ const verifyCreatedUser = asyncHandler(async (req, res) => {
     }
 
     // If User with verificationToken is found then update user's account as verified
-    user.isVerified = true;
-    user.verificationToken = null; // Reset the verification token
-    const verifiedUser = await user.save();
+    user.active = true
+    user.isVerified = true
+    user.verificationToken = null // Reset the verification token
+    const verifiedUser = await user.save()
 
     if(verifiedUser) {
-        const delayInSeconds = 5;
+        const delayInSeconds = 5
     
         const redirectUrl = `${clientUrl}/login`
      const responseHTML = `

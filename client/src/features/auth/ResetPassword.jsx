@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import useTitle from '../../hooks/useTitle'
-const serverUrl = process.env.SERVER_URL || 'http://localhost:4000' 
+// const serverUrl = process.env.SERVER_URL || 'http://localhost:4000' 
+const serverUrl = 'https://deploy3-api.onrender.com'  
 
 const ResetPassword = () => {
   useTitle('Reset Password')
@@ -138,8 +139,8 @@ const ResetPassword = () => {
   )}
 
   {resetPasswordSuccess && (
-    <p className='lg:mx-10 py-2 text-xl text-yellow-600 font-oswald font-light'>
-      <Link to='/login'>Password reset! Proceed to sign in</Link>
+    <p className='lg:mx-10 py-2 text-xl text-yellow-300 font-oswald font-light'>
+      <Link to='/login'>Password reset! Click <span className='text-orange-600 font-bold'>here</span> to sign in</Link>
     </p>
 
   )}

@@ -197,7 +197,7 @@ useEffect(() => {
                         </Dialog.Title>
                         <div className="mt-2">
                           <p className="text-sm text-gray-500">
-                            Congratulations! You have successfully completed the sign-up. You can now use your credentials to sign in.
+                            Congratulations! You have successfully completed the sign-up. Please check in your email to complete the account verification and then sign in.
                           </p>
                         </div>
                       </div>

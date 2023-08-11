@@ -2,9 +2,11 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAddNewNoteMutation } from "./notesApiSlice"
 import useTitle from "../../hooks/useTitle"
+import useAuth from "../../hooks/useAuth"
 
 const NewNoteForm = ( {users} ) => {
   useTitle('New Note')
+  const { username, isCoach, isAdmin } = useAuth(); // Get user's role
 
   const [addNewNote, {
     isLoading,
@@ -44,12 +46,26 @@ const NewNoteForm = ( {users} ) => {
   }
 
   const options = users.map(user => {
-    return (
+    // Include all users' options for Coaches and Admins
+    // Include only the currently logged-in user's option for others
+    if(isCoach || isAdmin) {
+      return (
         <option
             key={user.id}
             value={user.id}
+
+        > {user.username}</option > 
+        )
+    } else if (user.roles.includes('Coach') || user.roles.includes('Admin') || user.roles.includes('Guest') && user.username == username) {
+      return (
+        <option
+            key={user.id}
+            value={user.id}
+
         > {user.username}</option >
     )
+    }
+    return null
   })
 
   const content = (
@@ -61,7 +77,7 @@ const NewNoteForm = ( {users} ) => {
         <form className="space-y-6" onSubmit={onSaveNoteClicked}>
           <div className="text-center text-gray-300">
             <h2 className="text-4xl font-bold py-5">New Note</h2>
-              <div className="py-5">
+              {/* <div className="py-5">
                 <button 
                   title="save"
                   className="block rounded-md bg-indigo-600 w-20 px-3 py-2 text-center text-sm text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -69,7 +85,7 @@ const NewNoteForm = ( {users} ) => {
                   >
                     Save
                 </button>
-              </div>
+              </div> */}
           </div>
             
           <div>
@@ -120,6 +136,17 @@ const NewNoteForm = ( {users} ) => {
                   {options}
                 </select>
               </div>
+
+              <div className="pt-10">
+                <button 
+                  title="save"
+                  className="block rounded-md bg-indigo-600 w-20 px-3 py-2 text-center text-sm text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  // disabled={!canSave}
+                  >
+                    Save
+                </button>
+              </div>
+
           </div>
           
         </form>

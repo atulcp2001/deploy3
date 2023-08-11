@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import useTitle from '../../hooks/useTitle'
-const serverUrl = process.env.SERVER_URL || 'http://localhost:4000'          
+// const serverUrl = process.env.SERVER_URL || 'http://localhost:4000' 
+const serverUrl = 'https://deploy3-api.onrender.com'         
 
 const ForgotPasswordForm = () => {
 
